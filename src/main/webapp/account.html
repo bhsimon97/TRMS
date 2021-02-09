@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Employee Portal</title>
+        <link rel="icon" type="image/png" href="img/favicon.png">
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+        <link href="style.css" rel="stylesheet">
+    </head>
+
+    <style>
+.container-padding{
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+    </style>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top py-0">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="home.html"> <img src="img/logo.png">Your Brand Here</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto" id="navbarul">
+                    <li class="nav-item">
+                        <a class="nav-link" href="home.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="reimbursement.html">Reimbursement Info</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="account.html">My Account</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="logout.do" onclick="logout()">Log Out</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Request Form -->
+
+
+    <br>
+    <div class="container-padding">
+        <a class="btn btn-primary" data-toggle="collapse" href="#requestForm" role="button" aria-expanded="false" aria-controls="collapseExample">
+            Toggle Reimbursement Form View </a>
+        </div>
+    <div class="container-padding">
+        <div class="collapse mt-3" id="requestForm" data-toggle="collapse" aria-expanded="false">
+            <form id="requestForm">
+            <div class = "form group">
+                <label for="courseType">Course Type</label>
+                <select class="form-control" id="courseType">
+                   <option>University Course</option>
+                   <option>Seminar</option>
+                   <option>Certification Preparation Class</option>
+                    <option>Certification Exam</option>
+                    <option>Technical Training</option>
+                   <option>Other</option>
+                </select>
+                <br>
+            </div>
+            <div class="form group">
+                <label for="dateCompleted">Date of Event</label>
+                <input type="date" class="form-control" id="dateCompleted">
+                <br>
+            </div>
+            <div class="form group">
+                <label for="totalCost">Eligible Costs ($)</label>
+                <input type="number" class="form-control" id="totalCost">
+                <br>
+            </div>
+            <div class="form group">
+                <label for="gradingType">Grading Type</label>
+                <select class="form-control" id="gradingType">
+                    <option>A-F</option>
+                    <option>Pass/Fail</option>
+                   <option>Not Graded</option>
+               </select>
+                <br>
+            </div>
+            <div class="form group">
+                <label for="location">Location</label>
+                <input type="text" class="form-control" id="location">
+                <br>
+            </div>
+            <div class="form group">
+               <label for="hoursMissed">Work Hours Missed</label>
+                <input type="number" class="form-control" id="hoursMissed">
+               <br>
+               </div>
+            <div class="form group">
+                <label for="miscInfo">Misc Info (Links to event-related attachments, comments, etc)</label>
+                <input type="text" class="form-control" id="miscInfo">
+                <br>
+            </div>
+            <div class="form group">
+                <label for="calcAmount">Reimbursement Amount ($)</label>
+                <p id=calcAmount>-</p>
+            </div>
+            </form>
+            <p id="submitVerification"></p>
+      		<br>
+            <button type="button" class="btn btn-primary" onclick=submit()>Submit</button>
+        </div>
+        <hr>
+        </div>
+
+    <br>
+    <br>
+
+    <!-- Balance -->
+    <div class="container-padding">
+        <h4 id="yourBalance">Your Current Balance: </h4>
+        <br>
+    </div>
+
+
+    <!-- Pending Reimbursements -->
+
+    <div class="container-padding">
+        <h4>Pending Reimbursement Requests</h4>
+        <br>
+            <table id="pendingReimbursements" class="table table-bordered">
+                <tr>
+                    <th scope="col">Date Opened</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Location</th>
+                    <th scope="col">Amount ($)</th>
+                    <th scope="col">Hours Missed</th>
+                    <th scope="col">Supervisor Approval</th>
+                    <th scope="col">Department Head Approval</th>
+                    <th scope="col">Benefits Coordinator Approval</th>
+                </tr>
+            </table>
+        <hr>
+    </div>
+
+    <br>
+    <br>
+
+
+    <!-- Approved Reimbursements -->
+
+    <div class="container-padding">
+        <h4>Approved Reimbursements</h4>
+        <br>
+            <table id="approvedReimbursements" class="table table-bordered">
+                <tr>
+                    <th scope="col">Course Date</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Location</th>
+                    <th scope="col">Reimbursement</th>
+                    <th scope="col">Hours Missed</th>
+                </tr>
+            </table>
+        <hr>
+    </div>
+
+
+    <br>
+    <br>
+
+    <!-- Declined Reimbursements -->
+
+    <div class="container-padding">
+        <h4>Declined Reimbursements</h4>
+        <br>
+            <table id="deniedReimbursements" class="table table-bordered">
+                <tr>
+                    <th scope="col">Course Date</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Location</th>
+                    <th scope="col">Requested Reimbursement</th>
+                    <th scope="col">Supervisor Comments</th>
+                    <th scope="col">Department Head Comments</th>
+                    <th scope="col">Benefits Coordinator Comments</th>
+                </tr>
+            </table>
+        <hr>
+    </div>
+
+
+
+        <!-- Footer -->
+        <footer>
+            <div class="container-fluid padding">
+                <div class="row text-center">
+                    <div class="col-md-4">
+                        <br>
+                        <img src="img/logo.png">
+                    </div>
+                    <div class="col-md-4">
+                        <br>
+                        <p>Your Company Name</p>
+                        <p>PO Box 0000</p>
+                        <p>City, State 12345</p>
+                    </div>
+                    <div class="col-md-4">
+                        <i class="fas fa-phone"></i>
+                        <p>(555) 555-5555</p>
+                        <i class="fas fa-envelope-square"></i>
+                        <p>email@company.com</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    
+</body>
+
+<script>
+
+window.onload = getEmployeeRequests();
+window.onload = getUser();
+window.onload = getApprovedRequests();
+window.onload = getDeniedRequests();
+
+function getEmployeeRequests() {
+
+    let xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = function(){
+        if(this.readyState == 4 && this.status == 200){
+            console.log(this.responseText);
+            let requests = JSON.parse(this.responseText);
+            var pendingReimbursements = document.getElementById("pendingReimbursements");
+
+            for(i = 0; i < requests.length; i++){
+                let request = requests[i];
+                if(request.supervisorApproval == 0 || (request.supervisorApproval == 1 && request.dhApproval == 0) || (request.dhApproval == 1 && request.bencoApproval == 0)){
+                    var row = pendingReimbursements.insertRow();
+                    var openedDate = row.insertCell(0);
+                    openedDate.innerHTML = request.dateRequested.slice(0,request.dateRequested.indexOf(' '));
+                    var courseType = row.insertCell(1);
+                    courseType.innerHTML = request.courseType;
+                    var courseLocation = row.insertCell(2);
+                    courseLocation.innerHTML = request.location;
+                    var amountRequested = row.insertCell(3);
+                    amountRequested.innerHTML = request.amountRequested;
+                    var hoursMissed = row.insertCell(4);
+                    hoursMissed.innerHTML = request.hoursMissed;
+
+                    var sApprove = request.supervisorApproval;  
+                    var superApproval = row.insertCell(5);                     
+                        if(sApprove == 0){
+                            superApproval.innerHTML = "-";
+                        };
+                        if(request.supervisorApproval == 1){
+                            superApproval.innerHTML = "Approved";
+                        };
+                        if(request.supervisorApproval == 2){
+                            superApproval.innerHTML = "Denied";
+                        };
+
+                    var dApprove = request.dhApproval;
+                    var departmentApproval = row.insertCell(6);
+                        if(dApprove == 0){
+                            departmentApproval.innerHTML = "-";
+                        };
+                        if(dApprove == 1){
+                            departmentApproval.innerHTML = "Approved";
+                        };
+                        if(dApprove == 2){
+                            departmentApproval.innerHTML = "Denied";
+                        };
+
+                    var bApprove = request.bencoApproval;
+                    var bencoApproval = row.insertCell(7);
+                    
+                    	bencoApproval.innerHTML = "-";
+                        if(dApprove == 1){
+                            bencoApproval.innerHTML = "Awaiting final grade.";
+                        }
+
+                }
+
+            }
+
+        }
+    }
+
+    xhttp.open("GET", "http://localhost:8080/Project1/account.do", true);
+
+    xhttp.send();
+}
+
+function submit(){
+
+    var dt = new Date();
+    var dtstring = dt.getFullYear() + '-' + ('0' + (dt.getMonth() +1)).slice(-2) + '-' + ('0' + dt.getDate()).slice(-2);
+
+    let newRequest = {
+                courseType: document.getElementById("courseType").value,
+                amountRequested: document.getElementById("calcAmount").innerHTML,
+                gradingFormat: document.getElementById("gradingType").value,
+                location: document.getElementById("location").value,
+                dateRequested: dtstring,
+                dateCompleted: document.getElementById("dateCompleted").value,
+                hoursMissed: document.getElementById("hoursMissed").value,
+                miscInfo: document.getElementById("miscInfo").value                
+            }
+    console.log("New Request Below");
+    console.log(newRequest);
+
+    let xhr = new XMLHttpRequest();
+
+    xhr.onreadystatechange = function () {
+        if(this.readyState = 4 && this.status == 200){
+            console.log(this.responseText);
+        }
+    }
+
+    xhr.open("POST","http://localhost:8080/Project1/createRequest.do", true);
+    xhr.setRequestHeader("'Content-Type'",'application/json');
+    xhr.send(JSON.stringify(newRequest));
+
+    document.getElementById("submitVerification").innerHTML = "Request submitted! Please refresh the page to view updates.";
+    document.getElementById("submitVerification").style.color = "green";
+}
+
+const form = document.getElementById("requestForm")
+form.addEventListener('change',calculate);
+
+function calculate(){
+    var value = parseInt(document.getElementById("totalCost").value);
+    var selection = document.getElementById("courseType").value;
+
+    switch(selection){
+        case "University Course":
+            calc = value * .8
+            result = calc.toFixed(2);
+            break;
+        
+        case "Seminar":
+            calc = value * .6;
+            result = calc.toFixed(2);
+            break;
+        
+        case "Certification Preparation Class":
+           	calc = value * .75;
+            result = calc.toFixed(2);
+            break;
+
+        case "Certification Exam":
+            calc = value;
+            result = calc.toFixed(2);
+            break;
+        
+        case "Technical Training":
+            calc = value * .9;
+            result = calc.toFixed(2);
+            break;
+
+        case "Other":
+            calc = value * .3;
+            result = calc.toFixed(2);
+            break;
+                        
+    }
+    if(result < loggedInUser.balance){
+        document.getElementById("calcAmount").innerHTML = result;
+    }else{
+    	document.getElementById("calcAmount").innerHTML = loggedInUser.balance;
+    }
+
+}
+
+function getUser(){
+    let xhttp2 = new XMLHttpRequest();
+
+    xhttp2.onreadystatechange = function() {
+        if(this.readyState == 4 && this.status == 200){
+            loggedInUser = JSON.parse(this.responseText);
+
+            if(loggedInUser.position > 1){
+                let navbar = document.getElementById("navbarul");
+                let newlink = document.createElement("li");
+                newlink.classList.add("nav-item");
+
+                let link = document.createElement("a");
+                link.href = "/Project1/approveRequests.html";
+                link.classList.add("nav-link");
+                link.innerHTML = "Pending Requests"
+
+                newlink.append(link);
+                navbar.append(newlink);
+            }
+
+            yourBalance = document.getElementById("yourBalance");
+            yourBalance.innerHTML = "Your Current Balance: $" + (loggedInUser.balance);
+
+        }
+
+    }
+
+    xhttp2.open("GET", "http://localhost:8080/Project1/currentUser.do", true);
+    xhttp2.setRequestHeader('Content-Type','application/json');
+
+    xhttp2.send();
+}
+
+function getApprovedRequests() {
+
+let xhttp = new XMLHttpRequest();
+
+xhttp.onreadystatechange = function(){
+    if(this.readyState == 4 && this.status == 200){
+        console.log(this.responseText);
+        let requests = JSON.parse(this.responseText);
+        var approvedReimbursements = document.getElementById("approvedReimbursements");
+
+        for(i = 0; i < requests.length; i++){
+            let request = requests[i];
+            if(request.bencoApproval == 1){
+                var row = approvedReimbursements.insertRow();
+                var dateCompleted = row.insertCell(0);
+                dateCompleted.innerHTML = request.dateCompleted.slice(0,request.dateCompleted.indexOf(' '));
+                var courseType = row.insertCell(1);
+                courseType.innerHTML = request.courseType;
+                var courseLocation = row.insertCell(2);
+                courseLocation.innerHTML = request.location;
+                var amountRequested = row.insertCell(3);
+                amountRequested.innerHTML = request.amountRequested;
+                var hoursMissed = row.insertCell(4);
+                hoursMissed.innerHTML = request.hoursMissed;
+
+            }
+
+        }
+
+    }
+}
+
+xhttp.open("GET", "http://localhost:8080/Project1/approvedRequests.do", true);
+
+xhttp.send();
+}
+
+function getDeniedRequests() {
+
+	let xhttp = new XMLHttpRequest();
+
+	xhttp.onreadystatechange = function(){
+	    if(this.readyState == 4 && this.status == 200){
+	        console.log(this.responseText);
+	        let requests = JSON.parse(this.responseText);
+	        var deniedReimbursements = document.getElementById("deniedReimbursements");
+
+	        for(i = 0; i < requests.length; i++){
+	            let request = requests[i];
+	            if(request.bencoApproval == 2 || request.supervisorApproval == 2 || request.dhApproval == 2){
+	                var row = deniedReimbursements.insertRow();
+	                var courseDate = row.insertCell(0);
+	                courseDate.innerHTML = request.dateCompleted.slice(0,request.dateCompleted.indexOf(' '));
+	                var courseType = row.insertCell(1);
+	                courseType.innerHTML = request.courseType;
+	                var courseLocation = row.insertCell(2);
+	                courseLocation.innerHTML = request.location;
+	                var amountRequested = row.insertCell(3);
+	                amountRequested.innerHTML = request.amountRequested;
+	                var supervisorComments = row.insertCell(4);
+	                supervisorComments.innerHTML = request.supervisorComments;
+	                var dhComments = row.insertCell(5);
+	                dhComments.innerHTML = request.dhComments;
+	                var bencoComments = row.insertCell(6);
+	                bencoComments.innerHTML = request.bencoComments;
+	            }
+
+	        }
+
+	    }
+	}
+
+xhttp.open("GET", "http://localhost:8080/Project1/deniedRequests.do", true);
+
+xhttp.send();
+}
+
+</script>
+</html>

@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Portal</title>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <link href="style.css" rel="stylesheet">
+</head>
+
+<style>
+    .container-padding{
+        margin-left: 10%;
+        margin-right: 10%;
+    }
+    
+        </style>
+<body>
+
+    <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top py-0">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="home.html"> <img src="img/logo.png">Your Brand Here</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto" id="navbarul">
+                    <li class="nav-item">
+                        <a class="nav-link" href="home.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="reimbursement.html">Reimbursement Info</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="account.html">My Account</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="logout.do" onclick="logout()">Log Out</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-padding">
+        <h4>Pending Reimbursement Requests</h4>
+        <br>
+            <table id="pendingReimbursements" class="table table-bordered">
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Date Opened</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Location</th>
+                    <th scope="col">Amount ($)</th>
+                    <th scope="col">Hours Missed</th>
+                    <th scope="col">Misc Info</th>
+                    <th scope="col">Event Date</th>
+                    <th scope="col">Supervisor Comments</th>
+                    <th scope="col">Department Head Comments</th>
+                    <th scope="col">Benefits Coordinator Comments</th>
+                </tr>
+            </table>
+        <hr>
+    </div>
+
+    <div class="container-fluid" style="width: 50%">
+
+        <label for="requestSelect">Select Request</label>
+        <select class="form-control" id="requestSelect"></select>
+        <br>
+        <label for="comments">Add Comment (optional)</label>
+        <input class="form-control" id="comments">
+        <br>
+        <label for="changedBalance" id="changedBalanceLabel"></label>
+        <input class="form-control" type="hidden" id="changedBalance">
+        <p id="successful"></p>
+        <button class="btn btn-success" onclick="approve()">Approve</button>
+        <button class="btn btn-danger" onclick="deny()">Deny</button>
+    </div>
+
+    <footer>
+        <div class="container-fluid padding">
+            <div class="row text-center">
+                <div class="col-md-4">
+                    <br>
+                    <img src="img/logo.png">
+                </div>
+                <div class="col-md-4">
+                    <br>
+                    <p>Your Company Name</p>
+                    <p>PO Box 0000</p>
+                    <p>City, State 12345</p>
+                </div>
+                <div class="col-md-4">
+                    <i class="fas fa-phone"></i>
+                    <p>(555) 555-5555</p>
+                    <i class="fas fa-envelope-square"></i>
+                    <p>email@company.com</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    
+</body>
+
+<script>
+
+window.onload = getRequests();
+window.onload = getUser();
+var loggedInUser = undefined;
+
+function getRequests() {
+
+    let xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = function(){
+        if(this.readyState == 4 && this.status == 200){
+            var bigArray = JSON.parse(this.responseText);
+            var pendingReimbursements = document.getElementById("pendingReimbursements");
+
+            for(i = 0; i < bigArray.length; i++){
+               let request = bigArray[i];
+
+                    if((request.supervisorApproval == 0 && request.supervisorId == loggedInUser.id) || (request.dhApproval == 0 && request.dhId == loggedInUser.id) || (request.bencoApproval == 0 && request.bencoId == loggedInUser.id)) {
+                    var row = pendingReimbursements.insertRow();
+                    var name = row.insertCell(0); 
+                    name.innerHTML = request.employeeFirstName + " " + request.employeeLastName;
+                    var openedDate = row.insertCell(1);
+                    openedDate.innerHTML = request.dateRequested.slice(0,request.dateRequested.indexOf(' '));
+                    var courseType = row.insertCell(2);
+                    courseType.innerHTML = request.courseType;
+                    var courseLocation = row.insertCell(3);
+                    courseLocation.innerHTML = request.location;
+                    var amountRequested = row.insertCell(4);
+                    amountRequested.innerHTML = request.amountRequested;
+                    var hoursMissed = row.insertCell(5);
+                    hoursMissed.innerHTML = request.hoursMissed;
+                    var miscInfo = row.insertCell(6);
+                    ((request.miscInfo != undefined || request.miscInfo != null) ? miscInfo.innerHTML = request.miscInfo : miscInfo.innerHTML = "");
+                    var dateCompleted = row.insertCell(7);
+                    dateCompleted.innerHTML = request.dateCompleted.slice(0,10);
+
+                    if(request.supervisorComments != undefined){
+                    var supervisorComments = row.insertCell(8);
+                    supervisorComments.innerHTML = request.supervisorComments;
+                    }
+
+                    if(request.dhComments != undefined){
+                    var dhComments = row.insertCell(9);
+                    dhComments.innerHTML = request.dhComments;
+                    }
+
+                    if(request.bencoComments != undefined){
+                    var bencoComments = row.insertCell(10);
+                    bencoComments.innerHTML = request.bencoComments;
+                    }
+                    
+                    requestSelect.options[requestSelect.options.length] = new Option(name.innerHTML + " | " + openedDate.innerHTML + " | $" + amountRequested.innerHTML, JSON.stringify(request))
+                    
+                    if(request.supervisorApproval == 1 && request.dhApproval == 1 && request.bencoApproval == 0){
+                    document.getElementById("changedBalanceLabel").innerHTML = "Change Amount (optional)";
+                    document.getElementById("changedBalance").type = "number";
+                    }
+                    
+                    let myDate = new Date();
+                    let requestDate = new Date(request.dateCompleted);
+                    let twoWeeksDate = myDate.getDate() + 14;
+                    myDate.setDate(twoWeeksDate);
+                    console.log(myDate);
+                    console.log(requestDate);
+                    if(myDate > requestDate){
+                    	console.log("2 weeks");
+                        dateCompleted.classList.add("bg-danger");
+                        dateCompleted.style.color = "white";
+                    }
+                
+                    console.log(request);
+
+
+
+                }
+
+            }
+
+
+        }
+
+        
+    }
+
+
+    xhttp.open("GET", "http://localhost:8080/Project1/approvableRequests.do", true);
+
+    xhttp.send();
+
+}
+
+function getUser(){
+    let xhttp2 = new XMLHttpRequest();
+
+    xhttp2.onreadystatechange = function() {
+        if(this.readyState == 4 && this.status == 200){
+            loggedInUser = JSON.parse(this.responseText);
+
+            if(loggedInUser.position > 1){
+                let navbar = document.getElementById("navbarul");
+                let newlink = document.createElement("li");
+                newlink.classList.add("nav-item");
+
+                let link = document.createElement("a");
+                link.href = "/Project1/approveRequests.html";
+                link.classList.add("nav-link");
+                link.innerHTML = "Pending Requests"
+
+                newlink.append(link);
+                navbar.append(newlink);
+            }
+        }
+
+    }
+
+    xhttp2.open("GET", "http://localhost:8080/Project1/currentUser.do", true);
+    xhttp2.setRequestHeader('Content-Type','application/json');
+
+    xhttp2.send();
+}
+
+
+function approve(){
+
+    var requestSelect = document.getElementById("requestSelect");
+    var requestSelectIndex = requestSelect.options[requestSelect.selectedIndex];
+    var selectedRequest = JSON.parse(requestSelectIndex.value);
+    let json;
+
+    if(selectedRequest.supervisorApproval == 0){
+        selectedRequest.supervisorApproval = 1;
+        selectedRequest.supervisorComments = document.getElementById("comments").value;
+        console.log("Inside the first If statement")
+        json = JSON.stringify(selectedRequest);
+    }else if(selectedRequest.dhApproval == 0){
+        selectedRequest.supervisorApproval = 1;
+        selectedRequest.dhApproval = 1;
+        selectedRequest.dhComments = document.getElementById("comments").value;
+        json = JSON.stringify(selectedRequest);
+    }else if(selectedRequest.bencoApproval == 0){
+        console.log("inside the benco");
+        selectedRequest.supervisorApproval = 1;
+        selectedRequest.dhApproval = 1;
+        selectedRequest.bencoApproval = 1;
+        selectedRequest.bencoComments = document.getElementById("comments").value;
+        if(document.getElementById("changedBalance").value != null || document.getElementById("changedBalance").value != undefined || document.getElementById("changedBalance").value != ""){
+        	selectedRequest.amountRequested = document.getElementById("changedBalance").value;
+        }
+        json = JSON.stringify(selectedRequest);
+        console.log(json);
+    }
+
+
+
+
+    let xhttp = new XMLHttpRequest();
+
+    xhttp.open("POST", "http://localhost:8080/Project1/updateRequest.do", true)
+    xhttp.setRequestHeader("Content-Type","application/json")
+
+    xhttp.onreadystatechange = function(){
+        if(this.readyState == 4 && this.status == 200){
+
+        }
+    }
+
+
+
+    xhttp.send(json);
+
+    document.getElementById("successful").style.color = "Green";
+    document.getElementById("successful").innerHTML = "Request approved! Please refresh the page."
+
+    // location.reload();
+
+}
+
+function deny(){
+
+    var requestSelect = document.getElementById("requestSelect");
+    var requestSelectIndex = requestSelect.options[requestSelect.selectedIndex];
+    var selectedRequest = JSON.parse(requestSelectIndex.value);
+    let json;
+
+    if(selectedRequest.supervisorApproval == 0){
+        selectedRequest.supervisorApproval = 2;
+        selectedRequest.supervisorComments = document.getElementById("comments").value;
+        console.log("Inside the first If statement")
+        json = JSON.stringify(selectedRequest);
+    }else if(selectedRequest.dhApproval == 0){
+        selectedRequest.supervisorApproval = 1;
+        selectedRequest.dhApproval = 2;
+        selectedRequest.dhComments = document.getElementById("comments").value;
+        json = JSON.stringify(selectedRequest);
+    }else if(selectedRequest.bencoApproval == 0){
+        console.log("inside the benco");
+        selectedRequest.supervisorApproval = 1;
+        selectedRequest.dhApproval = 1;
+        selectedRequest.bencoApproval = 2;
+        selectedRequest.bencoComments = document.getElementById("comments").value;
+        json = JSON.stringify(selectedRequest);
+        console.log(json);
+    }
+
+
+    let xhttp = new XMLHttpRequest();
+
+    xhttp.open("POST", "http://localhost:8080/Project1/updateRequest.do", true)
+    xhttp.setRequestHeader("Content-Type","application/json")
+
+    xhttp.onreadystatechange = function(){
+        if(this.readyState == 4 && this.status == 200){
+
+        }
+    }
+
+
+
+    xhttp.send(json);
+
+    document.getElementById("successful").color = "Red";
+    document.getElementById("successful").innerHTML = "Request denied. Please refresh the page."
+
+    // location.reload();
+
+}
+
+
+</script>
+</html>

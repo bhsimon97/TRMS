@@ -1,0 +1,84 @@
+Tables
+
+
+    employees 
+        employee_id PK
+        first_name
+        last_name
+        department_id FK
+        position
+            this field would be a number
+            1 for Instructor
+            2 for Professor
+            3 for Department Head
+            4 for Benefits Coordinator
+            5 for President
+        email
+        username
+        Password
+        supervisor_id FK
+        balance
+
+    departments
+        department_id PK 
+        department_name
+        department_head_id FK
+
+    requests
+        request_id PK 
+        employee_id FK
+        supervisor_id FK 
+        supervisor_approval
+            0 for no response, 1 for approved, 2 for denied
+        supervisor_comments
+        department_head_id
+        dh_approval
+            0 for no response, 1 for approved, 2 for denied
+        dh_comments
+        benco_id
+        benco_approval
+            0 for no response, 1 for approved, 2 for denied
+        benco_comments
+        course_type
+            University Courses
+            Seminars
+            Certification Preparation Classes
+            Certification
+            Technical Training
+            Other
+        amount 
+        grading_format
+        location
+        date_requested
+        date_completed
+        hours_missed
+        misc_info
+
+    reimbursements                                              note - when someone completes their course and the reimbursement is processed, DELETE FROM requests and CREATE reimbursement
+        reimbursement_id
+        employee_id
+        supervisor_id
+        dh_id
+        benco_id
+        type
+            University Courses
+            Seminars
+            Certification Preparation Classes
+            Certification
+            Technical Training
+            Other
+        grading_format
+        grade
+        completion_proof
+        amount
+
+        
+Departments:
+
+    1 = language
+    2 = math
+    3 = natural sciences
+    4 = engineering
+    5 = arts
+    6 = history
+    7 = benefits

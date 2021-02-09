@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reimbursement Info</title>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Header -->
+    <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top py-0">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="home.html"> <img src="img/logo.png">Your Brand Here</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto" id="navbarul">
+                    <li class="nav-item">
+                        <a class="nav-link" href="home.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="reimbursement.html">Reimbursement Info</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="account.html">My Account</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="logout.do" onclick="logout()">Log Out</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid padding">
+        <div class="main-images">
+            <img src="img/building.jpg" class="img-fluid mx-auto d-block">
+        </div>
+        <hr>
+    </div>
+
+    <div class="container padding"> 
+        <h3 class="text-center">Reimbursement Accounts</h3>
+        <br>
+        <p>All employees are offered up to $1,000 each year in tuition reimbursement.</p>
+        <p>This is tracked through your Employee Tuition Reimbursement Account (ETRA). The balance of each employee's ETRA resets each year on January 1st.</p>
+        <p>The Company will reimburse tuition expenses at different rates depending on the form of education received.</p>
+        <p>Reimbursement rates are as follows:</p>
+            <div class="d-flex justify-content-center">
+        <ul>
+            <li>University Courses: 80% of tuition.</li>
+            <li>Seminars: 60% of attendance fees.</li>
+            <li>Certification Preparation Classes: 75% of tuition.</li>
+            <li>Certification Exams: 100% of exam fees.</li>
+            <li>Technical Training: 90% of tuition.</li>
+            <li>Other: 30% of associated fees.</li>
+        </ul>
+    </div>
+        <p>The Company will not provide reimbursement for other assorted costs, including textbooks or transportation.</p>
+        <br>
+    <hr>
+    </div>
+
+    <div class="container padding"> 
+        <h3 class="text-center">Requesting a Reimbursement</h3>
+        <br>
+        <p>Through the Tuition Reimbursement Management System, employees may request new tuition reimbursements and track the status of existing requests.</p>
+        <p>All employees requesting reimbursement must complete the Tuition Reimbursement Form at least one week prior to the start of their educational event.</p>
+        <p>Information required by the Tuition Reimbursement Form includes:</p>
+            <div class="d-flex justify-content-center">
+        <ul>
+            <li>Basic employee information (such as name, department, etc.)</li>
+            <li>Time and date of the start of the event</li>
+            <li>Location of the event</li>
+            <li>Description of the event</li>
+            <li>Cost of the event</li>
+            <li>The event's grading format</li>
+            <li>Any work-related justification for the educational event</li>
+        </ul>
+    </div>
+        <p>Optionally, employees may also include: </p>
+        <div class="d-flex justify-content-center">
+            <ul>
+                <li>Event-related attachments (.pdf, .png, .jpeg, .txt, or .doc files)</li>
+                <li>Proof of previous approvals (.msg files)</li>
+                <li>Number of hours of work to be missed</li>
+            </ul>
+        </div>
+
+        <p>After your request is received, it must be approved by your supervisor, your Department Head, and a Benefits Coordinator. </p>
+        <p>Once approved, reimbursement will be given upon submission of proof of completion and, if applicable, proof of a passing grade.</p>
+        <br>
+    <hr>
+    </div>
+
+
+
+    <!-- Footer -->
+    <footer>
+        <div class="container-fluid padding">
+            <div class="row text-center">
+                <div class="col-md-4">
+                    <br>
+                    <img src="img/logo.png">
+                </div>
+                <div class="col-md-4">
+                    <br>
+                    <p>Your Company Name</p>
+                    <p>PO Box 0000</p>
+                    <p>City, State 12345</p>
+                </div>
+                <div class="col-md-4">
+                    <i class="fas fa-phone"></i>
+                    <p>(555) 555-5555</p>
+                    <i class="fas fa-envelope-square"></i>
+                    <p>email@company.com</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+</body>
+
+<script>
+window.onload = getUser();
+
+function getUser(){
+    let xhttp2 = new XMLHttpRequest();
+
+    xhttp2.onreadystatechange = function() {
+        if(this.readyState == 4 && this.status == 200){
+            loggedInUser = JSON.parse(this.responseText);
+
+            if(loggedInUser.position > 1){
+                let navbar = document.getElementById("navbarul");
+                let newlink = document.createElement("li");
+                newlink.classList.add("nav-item");
+
+                let link = document.createElement("a");
+                link.href = "/Project1/approveRequests.html";
+                link.classList.add("nav-link");
+                link.innerHTML = "Pending Requests"
+
+                newlink.append(link);
+                navbar.append(newlink);
+            }
+        }
+
+    }
+
+    xhttp2.open("GET", "http://localhost:8080/Project1/currentUser.do", true);
+    xhttp2.setRequestHeader('Content-Type','application/json');
+
+    xhttp2.send();
+}
+</script>
+</html>
